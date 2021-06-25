@@ -2,6 +2,8 @@
 
 This app is built using Python 3.9+, Flask 2.0+, and Pinecone.
 
+You can find it [hosted on Heroku here](https://pinecone-demo.herokuapp.com/).
+
 ## Running the app locally
 
 Begin by cloning this git repo and navigating to the project directory.
