@@ -33,6 +33,15 @@ FLASK_ENV=development flask run
 
 The app should now be running on http://127.0.0.1:5000 in your browser.
 
+## Deploying the app to Heroku
+
+You can deploy this app to Heroku using the following steps:
+
+1. `heroku login` (Logs in to the Heroku CLI)
+2. `heroku create pinecone-demo` (You will need to use a unique name)
+3. `git push heroku master` (Pushes your latest code)
+4. `heroku open` (Opens the hosted app in your browser)
+
 ## Resources
 
 Python, pyenv, and pip
