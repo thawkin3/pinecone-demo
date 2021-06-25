@@ -16,7 +16,7 @@ python -m venv venv
 Install dependencies by running:
 
 ```
-pip install -e .
+python -m pip install -r requirements.txt
 ```
 
 Finally, to run the app on your machine, simply run this command from the terminal:
