@@ -51,6 +51,7 @@ Python, pyenv, and pip
 - https://github.com/pyenv/pyenv
 - https://github.com/pyenv/pyenv/blob/master/COMMANDS.md#pyenv-shell
 - https://pip.pypa.io/en/latest/user_guide/#requirements-files
+- https://www.twilio.com/blog/environment-variables-python
 
 Flask
 - https://flask.palletsprojects.com/en/2.0.x/installation/
@@ -61,3 +62,8 @@ Flask
 Heroku and Python
 - https://devcenter.heroku.com/articles/getting-started-with-python?singlepage=true
 - https://realpython.com/flask-by-example-part-1-project-setup/
+
+Pinecone
+- https://www.pinecone.io/docs/quickstart-python/
+- https://www.pinecone.io/docs/examples/question-answering/
+- https://docs.beta.pinecone.io/en/latest/python_client/manage.html

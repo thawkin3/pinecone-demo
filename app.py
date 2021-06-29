@@ -5,51 +5,80 @@ from flask import url_for
 import os
 import pandas as pd
 import pinecone
+import requests
+from sentence_transformers import SentenceTransformer
 
 app = Flask(__name__)
 
 load_dotenv()
-pinecone_api_key = user = os.environ['PINECONE_API_KEY']
+PINECONE_API_KEY = os.environ['PINECONE_API_KEY']
 
-pinecone.init(api_key=pinecone_api_key)
+pinecone.init(api_key=PINECONE_API_KEY)
 
-# list your Pinecone indexes
-print('listing existing pinecone indexes')
-print(pinecone.list_indexes())
+index_name = "question-answering-chatbot"
 
-# Delete the index
-print('deleting existing pinecone indexes')
-pinecone.delete_index("hello-tyler-pinecone-index")
+if index_name in pinecone.list_indexes():
+    pinecone.delete_index(index_name)
 
-# Create an index
-print('creating a new index')
-pinecone.create_index("hello-tyler-pinecone-index", metric="euclidean")
+pinecone.create_index(name=index_name, metric="cosine", shards=1)
+index = pinecone.Index(name=index_name)
 
-# Connect to the index
-print('connecting to the index')
-index = pinecone.Index("hello-tyler-pinecone-index")
+DATA_DIR = "tmp"
+DATA_FILE = f"{DATA_DIR}/quora_duplicate_questions.tsv"
+DATA_URL = "https://qim.fs.quoracdn.net/quora_duplicate_questions.tsv"
 
-# Generate some data
-print('generating some data')
-df = pd.DataFrame(data={
-    "id": ["A", "B", "C", "D", "E"],
-    "vector": [[1]*2, [2]*2, [3]*2, [4]*2, [5]*2]
-})
+def download_data():
+    os.makedirs(DATA_DIR, exist_ok=True)
 
-# Insert the data
-print('inserting data')
-index.upsert(items=zip(df.id, df.vector))
+    if not os.path.exists(DATA_FILE):
+        r = requests.get(DATA_URL)  # create HTTP response object
+        with open(DATA_FILE, "wb") as f:
+            f.write(r.content)
 
-# Query the index and get similar vectors
-print('querying data')
-print(index.query(queries=[[0, 1]], top_k=3))
+download_data()
 
-# Get index info
-print('index info')
-index.info()
+pd.set_option("display.max_colwidth", 500)
+
+df = pd.read_csv(
+    f"{DATA_FILE}", sep="\t", usecols=["qid1", "question1"], index_col=False
+)
+df = df.sample(frac=1).reset_index(drop=True)
+df.drop_duplicates(inplace=True)
+print(df.head())
+
+model = SentenceTransformer("average_word_embeddings_glove.6B.300d")
+df["question_vector"] = df.question1.apply(lambda x: model.encode(str(x)))
+
+acks = index.upsert(items=zip(df.qid1, df.question_vector))
 print(index.info())
+
+
+query_questions = [
+    "What is best way to make money online?",
+]
+
+# extract embeddings for the questions
+query_vectors = [model.encode(str(question)) for question in query_questions]
+
+# query pinecone
+query_results = index.query(queries=query_vectors, top_k=5)
+
+# show the results
+for question, res in zip(query_questions, query_results):
+    print("\n\n\n Original question : " + str(question))
+    print("\n Most similar questions based on pinecone vector search: \n")
+
+    df_result = pd.DataFrame(
+        {
+            "id": res.ids,
+            "question": [
+                df[df.qid1 == int(_id)].question1.values[0] for _id in res.ids
+            ],
+            "score": res.scores,
+        }
+    )
+    print(df_result)
 
 @app.route("/")
 def index():
     return render_template("index.html")
-
