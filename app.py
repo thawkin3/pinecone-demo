@@ -64,14 +64,10 @@ def create_and_apply_model():
 
     return model
 
-# def query_pinecone(search_term):
-def query_pinecone():
+def query_pinecone(search_term):
     print("query_pinecone")
-    # print(search_term)
-    # query_questions = [str(search_term)]
-    query_questions = [
-        "What is best way to make money online?",
-    ]
+    print(search_term)
+    query_questions = [str(search_term)]
 
     print("extracting embeddings for the questions")
     query_vectors = [model.encode(str(question)) for question in query_questions]
@@ -79,7 +75,6 @@ def query_pinecone():
     print("querying pinecone")
     query_results = pinecone_index.query(queries=query_vectors, top_k=5)
 
-    # show the results
     for question, res in zip(query_questions, query_results):
         print("\n\n\n Original question : " + str(question))
         print("\n Most similar questions based on pinecone vector search: \n")
@@ -100,7 +95,6 @@ pinecone_index = create_pinecone_index()
 download_data()
 df = read_tsv_file()
 model = create_and_apply_model()
-# query_pinecone()
 
 @app.route("/")
 def index():
@@ -109,10 +103,8 @@ def index():
 @app.route("/api/search", methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
-        # query_pinecone(request.form.questionInput)
-        query_pinecone()
+        query_pinecone(request.form.questionInput)
         return request.form.questionInput
     if request.method == 'GET':
-        # query_pinecone(request.args.get('questionInput', ''))
-        query_pinecone()
+        query_pinecone(request.args.get('questionInput', ''))
         return request.args.get('questionInput', '')
