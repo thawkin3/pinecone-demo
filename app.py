@@ -12,15 +12,16 @@ app = Flask(__name__)
 
 load_dotenv()
 PINECONE_API_KEY = os.environ['PINECONE_API_KEY']
+print(PINECONE_API_KEY)
 
 pinecone.init(api_key=PINECONE_API_KEY)
 
 index_name = "question-answering-chatbot"
 
-if index_name in pinecone.list_indexes():
-    pinecone.delete_index(index_name)
+if index_name not in pinecone.list_indexes():
+    print("creating index")
+    pinecone.create_index(name=index_name, metric="cosine", shards=1)
 
-pinecone.create_index(name=index_name, metric="cosine", shards=1)
 index = pinecone.Index(name=index_name)
 
 DATA_DIR = "tmp"
@@ -28,9 +29,11 @@ DATA_FILE = f"{DATA_DIR}/quora_duplicate_questions.tsv"
 DATA_URL = "https://qim.fs.quoracdn.net/quora_duplicate_questions.tsv"
 
 def download_data():
+    print("checking if TSV file needs to be downloaded")
     os.makedirs(DATA_DIR, exist_ok=True)
 
     if not os.path.exists(DATA_FILE):
+        print("downloading TSV file")
         r = requests.get(DATA_URL)  # create HTTP response object
         with open(DATA_FILE, "wb") as f:
             f.write(r.content)
@@ -46,6 +49,7 @@ df = df.sample(frac=1).reset_index(drop=True)
 df.drop_duplicates(inplace=True)
 print(df.head())
 
+print("applying the model")
 model = SentenceTransformer("average_word_embeddings_glove.6B.300d")
 df["question_vector"] = df.question1.apply(lambda x: model.encode(str(x)))
 
@@ -57,10 +61,10 @@ query_questions = [
     "What is best way to make money online?",
 ]
 
-# extract embeddings for the questions
+print("extracting embeddings for the questions")
 query_vectors = [model.encode(str(question)) for question in query_questions]
 
-# query pinecone
+print("querying pinecone")
 query_results = index.query(queries=query_vectors, top_k=5)
 
 # show the results
