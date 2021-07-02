@@ -25,6 +25,13 @@
 
 <body>
   <h1>Pinecone Customer Service Chat Bot</h1>
+  <p>This machine learning app is built using Python, Flask, and the Pinecone SDK.</p>
+  <p>Enter a question below. Our machine learning algorithm will search for related questions that have been answered in the past.</p>
+  <form id="questionForm">
+    <label for="questionInput">Question:</label>
+    <input id="questionInput" name="questionInput" />
+    <button type="submit">Submit</button>
+  </form>
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

@@ -58,6 +58,7 @@ Flask
 - https://flask.palletsprojects.com/en/2.0.x/quickstart/
 - https://flask.palletsprojects.com/en/2.0.x/tutorial/
 - https://github.com/pallets/flask/tree/main/examples/tutorial
+- https://flask.palletsprojects.com/en/2.0.x/api/#flask.Request
 
 Heroku and Python
 - https://devcenter.heroku.com/articles/getting-started-with-python?singlepage=true
