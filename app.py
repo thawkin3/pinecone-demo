@@ -3,6 +3,7 @@ from flask import Flask
 from flask import render_template
 from flask import request
 from flask import url_for
+import json
 import os
 import pandas as pd
 import pinecone
@@ -75,7 +76,20 @@ def query_pinecone(search_term):
     print("querying pinecone")
     query_results = pinecone_index.query(queries=query_vectors, top_k=5)
 
+    results_list = []
+
     for question, res in zip(query_questions, query_results):
+        print(res.ids)
+        print(res.scores)
+
+        for idx, _id in enumerate(res.ids):
+            print(df[df.qid1 == int(_id)].question1.values[0])
+            results_list.append({
+                "id": _id,
+                "question": df[df.qid1 == int(_id)].question1.values[0],
+                "score": res.scores[idx],
+            })
+
         print("\n\n\n Original question : " + str(question))
         print("\n Most similar questions based on pinecone vector search: \n")
 
@@ -90,6 +104,8 @@ def query_pinecone(search_term):
         )
         print(df_result)
 
+    return json.dumps(results_list)
+
 initialize_pinecone()
 pinecone_index = create_pinecone_index()
 download_data()
@@ -103,8 +119,6 @@ def index():
 @app.route("/api/search", methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
-        query_pinecone(request.form.questionInput)
-        return request.form.questionInput
+        return query_pinecone(request.form.questionInput)
     if request.method == 'GET':
-        query_pinecone(request.args.get('questionInput', ''))
-        return request.args.get('questionInput', '')
+        return query_pinecone(request.args.get('questionInput', ''))
