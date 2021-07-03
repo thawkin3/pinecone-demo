@@ -13,3 +13,30 @@ body {
   padding: 2rem;
   text-align: center;
 }
+
+table {
+  border-collapse: collapse;
+  width: 48rem;
+  max-width: 100%;
+  margin: auto;
+  text-align: left;
+}
+
+table td, table th {
+  border: 0.0625rem solid #ddd;
+  padding: 0.5rem;
+}
+
+table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+table th {
+  padding: 0.75rem 0.5rem;
+  background-color: #04AA6D;
+  color: #fff;
+}
+
+table .questionColumn {
+  width: 80%;
+}

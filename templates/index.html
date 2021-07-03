@@ -28,10 +28,23 @@
   <p>This machine learning app is built using Python, Flask, and the Pinecone SDK.</p>
   <p>Enter a question below. Our machine learning algorithm will search for related questions that have been answered in the past.</p>
   <form id="questionForm">
-    <label for="questionInput">Question:</label>
-    <input id="questionInput" name="questionInput" />
+    <label for="question">Question:</label>
+    <input id="question" name="question" />
     <button type="submit">Submit</button>
   </form>
+  <div id="resultsContainer" style="display: none;">
+    <h2>Search Results:</h2>
+    <table>
+      <thead>
+        <tr>
+          <th scope="col" class="questionColumn">Question</th>
+          <th scope="col" class="scoreColumn">Match Score</th>
+        </tr>
+      </thead>
+      <tbody id="resultsTableBody"></tbody>
+    </table>
+  </div>
+  
   <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>

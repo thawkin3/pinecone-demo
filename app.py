@@ -119,6 +119,6 @@ def index():
 @app.route("/api/search", methods=['POST', 'GET'])
 def search():
     if request.method == 'POST':
-        return query_pinecone(request.form.questionInput)
+        return query_pinecone(request.form.question)
     if request.method == 'GET':
-        return query_pinecone(request.args.get('questionInput', ''))
+        return query_pinecone(request.args.get('question', ''))
