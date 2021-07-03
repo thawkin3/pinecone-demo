@@ -68,41 +68,41 @@ def create_and_apply_model():
 def query_pinecone(search_term):
     print("query_pinecone")
     print(search_term)
-    query_questions = [str(search_term)]
+    query_question = str(search_term)
 
-    print("extracting embeddings for the questions")
-    query_vectors = [model.encode(str(question)) for question in query_questions]
+    print("extracting embeddings for the question")
+    query_vectors = [model.encode(query_question)]
 
     print("querying pinecone")
     query_results = pinecone_index.query(queries=query_vectors, top_k=5)
+    res = query_results[0]
 
     results_list = []
 
-    for question, res in zip(query_questions, query_results):
-        print(res.ids)
-        print(res.scores)
+    print(res.ids)
+    print(res.scores)
 
-        for idx, _id in enumerate(res.ids):
-            print(df[df.qid1 == int(_id)].question1.values[0])
-            results_list.append({
-                "id": _id,
-                "question": df[df.qid1 == int(_id)].question1.values[0],
-                "score": res.scores[idx],
-            })
+    for idx, _id in enumerate(res.ids):
+        print(df[df.qid1 == int(_id)].question1.values[0])
+        results_list.append({
+            "id": _id,
+            "question": df[df.qid1 == int(_id)].question1.values[0],
+            "score": res.scores[idx],
+        })
 
-        print("\n\n\n Original question : " + str(question))
-        print("\n Most similar questions based on pinecone vector search: \n")
+    print("\n\n\n Original question : " + query_question)
+    print("\n Most similar questions based on pinecone vector search: \n")
 
-        df_result = pd.DataFrame(
-            {
-                "id": res.ids,
-                "question": [
-                    df[df.qid1 == int(_id)].question1.values[0] for _id in res.ids
-                ],
-                "score": res.scores,
-            }
-        )
-        print(df_result)
+    df_result = pd.DataFrame(
+        {
+            "id": res.ids,
+            "question": [
+                df[df.qid1 == int(_id)].question1.values[0] for _id in res.ids
+            ],
+            "score": res.scores,
+        }
+    )
+    print(df_result)
 
     return json.dumps(results_list)
 
