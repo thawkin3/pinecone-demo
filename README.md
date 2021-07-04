@@ -2,8 +2,6 @@
 
 This app is built using Python 3.9+, Flask 2.0+, and Pinecone.
 
-You can find it [hosted on Heroku here](https://pinecone-demo.herokuapp.com/).
-
 ## Running the app locally
 
 Begin by cloning this git repo and navigating to the project directory.
@@ -35,15 +33,6 @@ FLASK_ENV=development flask run
 
 The app should now be running on http://127.0.0.1:5000 in your browser.
 
-## Deploying the app to Heroku
-
-You can deploy this app to Heroku using the following steps:
-
-1. `heroku login` (Logs in to the Heroku CLI)
-2. `heroku create pinecone-demo` (You will need to use a unique name)
-3. `git push heroku master` (Pushes your latest code)
-4. `heroku open` (Opens the hosted app in your browser)
-
 ## Resources
 
 Python, pyenv, and pip
@@ -59,10 +48,6 @@ Flask
 - https://flask.palletsprojects.com/en/2.0.x/tutorial/
 - https://github.com/pallets/flask/tree/main/examples/tutorial
 - https://flask.palletsprojects.com/en/2.0.x/api/#flask.Request
-
-Heroku and Python
-- https://devcenter.heroku.com/articles/getting-started-with-python?singlepage=true
-- https://realpython.com/flask-by-example-part-1-project-setup/
 
 Pinecone
 - https://www.pinecone.io/docs/quickstart-python/
