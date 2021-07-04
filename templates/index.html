@@ -5,32 +5,26 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
-  <title>A Basic HTML5 Template</title>
-  <meta name="description" content="A simple HTML5 Template for new projects.">
-  <meta name="author" content="SitePoint">
+  <title>Pinecone Customer Service Chat Bot</title>
+  <meta name="description" content="A machine learning app built with Python, Flask, and the Pinecone SDK.">
+  <meta name="author" content="Tyler Hawkins">
 
-  <meta property="og:title" content="A Basic HTML5 Template">
+  <meta property="og:title" content="Pinecone Customer Service Chat Bot">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://www.sitepoint.com/a-basic-html5-template/">
-  <meta property="og:description" content="A simple HTML5 Template for new projects.">
-  <meta property="og:image" content="image.png">
-
-  <link rel="icon" href="/favicon.ico">
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <meta property="og:description" content="A machine learning app built with Python, Flask, and the Pinecone SDK.">
 
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-
 </head>
 
 <body>
   <h1>Pinecone Customer Service Chat Bot</h1>
-  <p>This machine learning app is built using Python, Flask, and the Pinecone SDK.</p>
-  <p>Enter a question below. Our machine learning algorithm will search for related questions that have been answered in the past.</p>
+  <p>This machine learning app is built using <a href="https://www.python.org/doc/">Python</a>, <a href="https://flask.palletsprojects.com/en/2.0.x/">Flask</a>, and the <a href="https://www.pinecone.io/">Pinecone SDK</a>.</p>
+  <p>Enter a question below. Our machine learning algorithm will search for related questions that have been asked in the past.</p>
+  <p>This demo uses a <a href="https://qim.fs.quoracdn.net/quora_duplicate_questions.tsv">dataset of questions</a> from Quora.</p>
   <form id="questionForm">
     <label for="question">Question:</label>
-    <input id="question" name="question" />
-    <button type="submit">Submit</button>
+    <input id="question" name="question" autocomplete="off" />
+    <button type="submit" id="submitButton">Submit</button>
   </form>
   <div id="resultsContainer" style="display: none;">
     <h2>Search Results:</h2>

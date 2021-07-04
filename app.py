@@ -91,3 +91,4 @@ def search():
         return query_pinecone(request.form.question)
     if request.method == "GET":
         return query_pinecone(request.args.get("question", ""))
+    return "Only GET and POST methods are allowed for this endpoint"
