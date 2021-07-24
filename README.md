@@ -21,13 +21,19 @@ Install dependencies by running:
 python -m pip install -r requirements.txt
 ```
 
+Create an `.env` file and add your Pinecone API key:
+
+```
+PINECONE_API_KEY=your-key-here
+```
+
 Finally, to run the app on your machine, simply run this command from the terminal:
 
 ```
 flask run
 ```
 
-To run the app in debug mode, add the `FLASK_ENV=development` environment variable before the command:
+Or, to run the app in debug mode, add the `FLASK_ENV=development` environment variable before the command:
 
 ```
 FLASK_ENV=development flask run
